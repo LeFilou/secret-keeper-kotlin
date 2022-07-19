@@ -38,7 +38,10 @@ dependencies {
 	runtimeOnly("org.postgresql:postgresql")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	annotationProcessor("org.projectlombok:lombok")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("io.rest-assured:kotlin-extensions:5.1.1")
+	testImplementation("io.rest-assured:spring-mock-mvc:5.1.1")
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("org.testcontainers:postgresql")
 }

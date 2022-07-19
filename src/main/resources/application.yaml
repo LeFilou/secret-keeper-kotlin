@@ -1,0 +1,33 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api/
+# Database config
+spring:
+  datasource:
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    url: ${DB_URL}
+  liquibase:
+    changeLog: "classpath:/db/changelog/changelog-master.xml"
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+# Actuator config
+management:
+  endpoints:
+    web:
+      exposure:
+        include: beans, metrics, info, health, loggers, readiness
+  endpoint:
+    health:
+      show-details: always
+# Misc
+secretkeeper:
+  trace: true
