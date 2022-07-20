@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
 	id("org.springframework.boot") version "2.7.1"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
-	id("org.openapi.generator") version "5.1.1"
+	id("org.openapi.generator") version "6.0.0"
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
 	kotlin("plugin.jpa") version "1.6.21"
@@ -43,8 +43,8 @@ dependencies {
 	// Swagger
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("javax.validation:validation-api:2.0.0.Final")
-	implementation("io.springfox:springfox-boot-starter:3.0.0")
 	implementation("org.openapitools:jackson-databind-nullable:0.2.2")
+	implementation("org.springdoc:springdoc-openapi-ui:1.6.9")
 
 	// Database
 	implementation("org.liquibase:liquibase-core")
