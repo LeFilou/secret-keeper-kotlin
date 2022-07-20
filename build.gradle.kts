@@ -44,6 +44,7 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("javax.validation:validation-api:2.0.0.Final")
 	implementation("io.springfox:springfox-boot-starter:3.0.0")
+	implementation("org.openapitools:jackson-databind-nullable:0.2.2")
 
 	// Database
 	implementation("org.liquibase:liquibase-core")
@@ -76,6 +77,7 @@ openApiGenerate {
 }
 
 tasks.withType<KotlinCompile> {
+	dependsOn("openApiGenerate")
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
 		jvmTarget = "17"
