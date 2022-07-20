@@ -1,0 +1,12 @@
+{
+  "swaggerDocketConfig": "true",
+  "java8": "true",
+  "useTags": "true",
+  "generateApiTests": "true",
+  "generateApiDocumentation": "true",
+  "supportingFiles": "false",
+  "serializableModel": "true",
+  "basePackage": "org.melsif.secretkeeperkotlin.credentials.web",
+  "modelPackage": "org.melsif.secretkeeperkotlin.credentials.web",
+  "apiPackage": "org.melsif.secretkeeperkotlin.credentials.web"
+}
