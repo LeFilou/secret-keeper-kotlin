@@ -1,7 +1,6 @@
 package org.melsif.secretkeeperkotlin.acceptancetests
 
 import io.restassured.RestAssured
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles

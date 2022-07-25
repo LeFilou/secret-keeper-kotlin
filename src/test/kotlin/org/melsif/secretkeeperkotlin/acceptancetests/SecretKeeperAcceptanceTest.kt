@@ -2,9 +2,9 @@ package org.melsif.secretkeeperkotlin.acceptancetests
 
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
-import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.springframework.http.HttpStatus.NOT_IMPLEMENTED
 
 class SecretKeeperAcceptanceTest : AcceptanceTest() {
 
@@ -16,8 +16,7 @@ class SecretKeeperAcceptanceTest : AcceptanceTest() {
             When {
                 get("api/credentials/")
             } Then {
-              statusCode(200)
-              body("size()", `is`(5))
+              statusCode(NOT_IMPLEMENTED.value())
             }
         }
     }

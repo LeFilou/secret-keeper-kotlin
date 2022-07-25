@@ -42,7 +42,7 @@ dependencies {
 
 	// Swagger
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("javax.validation:validation-api:2.0.0.Final")
+	implementation("javax.validation:validation-api:2.0.1.Final")
 	implementation("org.openapitools:jackson-databind-nullable:0.2.2")
 	implementation("org.springdoc:springdoc-openapi-ui:1.6.9")
 
