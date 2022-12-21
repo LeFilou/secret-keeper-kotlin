@@ -20,6 +20,19 @@ configurations {
 	}
 }
 
+sourceSets {
+	create("integrationTest") {
+		compileClasspath += sourceSets.main.get().output
+		runtimeClasspath += sourceSets.main.get().output
+	}
+}
+
+val integrationTestImplementation by configurations.getting {
+	extendsFrom(configurations.implementation.get())
+}
+configurations["integrationTestRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
+
+
 repositories {
 	mavenCentral()
 }
@@ -55,12 +68,17 @@ dependencies {
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 
-	// Test
+	// Unit Tests
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.rest-assured:kotlin-extensions:5.1.1")
 	testImplementation("io.rest-assured:spring-mock-mvc:5.1.1")
-	testImplementation("org.testcontainers:junit-jupiter")
-	testImplementation("org.testcontainers:postgresql")
+
+	// Integration Tests
+	integrationTestImplementation("org.springframework.boot:spring-boot-starter-test")
+	integrationTestImplementation("io.rest-assured:kotlin-extensions:5.1.1")
+	integrationTestImplementation("io.rest-assured:spring-mock-mvc:5.1.1")
+	integrationTestImplementation("org.testcontainers:junit-jupiter")
+	integrationTestImplementation("org.testcontainers:postgresql")
 }
 
 dependencyManagement {
@@ -87,4 +105,3 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
-

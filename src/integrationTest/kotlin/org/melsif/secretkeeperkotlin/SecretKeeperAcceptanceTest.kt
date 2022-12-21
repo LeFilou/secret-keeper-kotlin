@@ -1,4 +1,4 @@
-package org.melsif.secretkeeperkotlin.acceptancetests
+package org.melsif.secretkeeperkotlin
 
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
