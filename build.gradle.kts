@@ -1,6 +1,14 @@
+@file:Suppress("UnstableApiUsage")
+
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+group = "org.melsif"
+version = "0.0.1-SNAPSHOT"
+java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceSets["main"].java.srcDir("$buildDir/generated/src/main/java")
+
 plugins {
+	`jvm-test-suite`
 	id("org.springframework.boot") version "2.7.1"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	id("org.openapi.generator") version "6.0.0"
@@ -9,35 +17,17 @@ plugins {
 	kotlin("plugin.jpa") version "1.6.21"
 }
 
-group = "org.melsif"
-version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_17
-java.sourceSets["main"].java.srcDir("$buildDir/generated/src/main/java")
+repositories {
+	mavenCentral()
+}
+
+extra["testcontainersVersion"] = "1.17.3"
 
 configurations {
 	compileOnly {
 		extendsFrom(configurations.annotationProcessor.get())
 	}
 }
-
-sourceSets {
-	create("integrationTest") {
-		compileClasspath += sourceSets.main.get().output
-		runtimeClasspath += sourceSets.main.get().output
-	}
-}
-
-val integrationTestImplementation by configurations.getting {
-	extendsFrom(configurations.implementation.get())
-}
-configurations["integrationTestRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
-
-
-repositories {
-	mavenCentral()
-}
-
-extra["testcontainersVersion"] = "1.17.3"
 
 dependencies {
 
@@ -67,18 +57,6 @@ dependencies {
 	// Misc
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
-
-	// Unit Tests
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("io.rest-assured:kotlin-extensions:5.1.1")
-	testImplementation("io.rest-assured:spring-mock-mvc:5.1.1")
-
-	// Integration Tests
-	integrationTestImplementation("org.springframework.boot:spring-boot-starter-test")
-	integrationTestImplementation("io.rest-assured:kotlin-extensions:5.1.1")
-	integrationTestImplementation("io.rest-assured:spring-mock-mvc:5.1.1")
-	integrationTestImplementation("org.testcontainers:junit-jupiter")
-	integrationTestImplementation("org.testcontainers:postgresql")
 }
 
 dependencyManagement {
@@ -102,6 +80,48 @@ tasks.withType<KotlinCompile> {
 	}
 }
 
-tasks.withType<Test> {
-	useJUnitPlatform()
+testing {
+	suites {
+		configureEach {
+			if (this is JvmTestSuite) {
+				useJUnitJupiter()
+				dependencies {
+					// Unit Tests
+					implementation("org.springframework.boot:spring-boot-starter-test")
+					implementation("io.rest-assured:kotlin-extensions:5.1.1")
+					implementation("io.rest-assured:spring-mock-mvc:5.1.1")
+				}
+			}
+		}
+		val test by getting(JvmTestSuite::class)
+
+		val integrationTest by registering(JvmTestSuite::class) {
+			testType.set(TestSuiteType.INTEGRATION_TEST)
+			sources {
+				java {
+					setSrcDirs(listOf("src/integrationTest/kotlin"))
+				}
+			}
+			dependencies {
+				implementation(project(project.path))
+				implementation("org.springframework.boot:spring-boot-starter-test")
+				implementation("io.rest-assured:kotlin-extensions:5.1.1")
+				implementation("io.rest-assured:spring-mock-mvc:5.1.1")
+				implementation("org.testcontainers:junit-jupiter")
+				implementation("org.testcontainers:postgresql")
+			}
+
+			targets {
+				all {
+					testTask.configure {
+						shouldRunAfter(test)
+					}
+				}
+			}
+		}	}
+}
+
+
+tasks.named("check") {
+	dependsOn(testing.suites.named("integrationTest"))
 }
