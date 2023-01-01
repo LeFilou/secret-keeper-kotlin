@@ -17,6 +17,7 @@ plugins {
 	`jvm-test-suite`
 	jacoco
 	id("org.sonarqube") version "3.5.0.2730"
+	`maven-publish`
 }
 
 repositories {
@@ -189,4 +190,8 @@ tasks.jacocoTestCoverageVerification {
 			)
 		}
 	}
+}
+
+tasks.getByName<Jar>("jar") {
+	enabled = false
 }
