@@ -38,7 +38,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Integration Tests
-        run: gradle build -x test
+        run: gradle build -x test --info
 
   docker:
     name: Publish - Docker Hub
