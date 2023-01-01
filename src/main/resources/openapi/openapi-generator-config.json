@@ -7,7 +7,7 @@
   "java8": true,
   "useTags": true,
   "serializableModel": true,
-  "basePackage": "org.melsif.secretkeeperkotlin.credentials.web",
-  "modelPackage": "org.melsif.secretkeeperkotlin.credentials.web",
-  "apiPackage": "org.melsif.secretkeeperkotlin.credentials.web"
+  "basePackage": "org.melsif.secretkeeperkotlin.generated.credentials.api",
+  "modelPackage": "org.melsif.secretkeeperkotlin.generated.credentials.api",
+  "apiPackage": "org.melsif.secretkeeperkotlin.generated.credentials.api"
 }

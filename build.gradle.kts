@@ -8,13 +8,15 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 java.sourceSets["main"].java.srcDir("$buildDir/generated/src/main/java")
 
 plugins {
-	`jvm-test-suite`
 	id("org.springframework.boot") version "2.7.1"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	id("org.openapi.generator") version "6.0.0"
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
 	kotlin("plugin.jpa") version "1.6.21"
+	`jvm-test-suite`
+	jacoco
+	id("org.sonarqube") version "3.5.0.2730"
 }
 
 repositories {
@@ -93,7 +95,16 @@ testing {
 				}
 			}
 		}
-		val test by getting(JvmTestSuite::class)
+		val test by getting(JvmTestSuite::class) {
+			targets {
+				all {
+					testTask.configure {
+						finalizedBy("jacocoTestReport")
+					}
+				}
+			}
+
+		}
 
 		val integrationTest by registering(JvmTestSuite::class) {
 			testType.set(TestSuiteType.INTEGRATION_TEST)
@@ -118,10 +129,64 @@ testing {
 					}
 				}
 			}
-		}	}
+		}
+	}
 }
 
-
-tasks.named("check") {
+tasks.check {
 	dependsOn(testing.suites.named("integrationTest"))
+}
+
+sonarqube {
+	properties {
+		property("sonar.projectKey", "LeFilou_secret-keeper-kotlin")
+		property("sonar.organization", "lefilou")
+		property("sonar.host.url", "https://sonarcloud.io")
+		property("sonar.java.coveragePlugin", "jacoco")
+		property("sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+		property("sonar.language", "kotlin")
+		property("sonar.sources", "src/main/kotlin")
+	}
+}
+
+tasks.jacocoTestReport {
+	reports {
+		html.required.set(true)
+		xml.required.set(true)
+		csv.required.set(false)
+	}
+	finalizedBy("jacocoTestCoverageVerification")
+}
+
+tasks.jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			limit {
+				minimum = "0.30".toBigDecimal()
+			}
+		}
+
+		rule {
+			enabled = true
+
+			element = "CLASS"
+
+			limit {
+				counter = "BRANCH"
+				value = "COVEREDRATIO"
+				minimum = "0.80".toBigDecimal()
+			}
+
+			limit {
+				counter = "LINE"
+				value = "COVEREDRATIO"
+				minimum = "0.90".toBigDecimal()
+			}
+
+			excludes = listOf(
+				"*.generated.*",
+				"*.SecretKeeperKotlinApplication*",
+			)
+		}
+	}
 }
