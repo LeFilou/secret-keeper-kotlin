@@ -1,6 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 group = "org.melsif"
 version = "0.0.1-SNAPSHOT"
@@ -192,6 +193,6 @@ tasks.jacocoTestCoverageVerification {
 	}
 }
 
-tasks.getByName<Jar>("jar") {
-	enabled = false
+tasks.getByName<BootJar>("bootJar") {
+	archiveClassifier.set("boot")
 }

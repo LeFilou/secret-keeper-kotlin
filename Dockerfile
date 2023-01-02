@@ -14,7 +14,7 @@ USER javauser
 
 WORKDIR /app
 
-COPY --from=build /workspace/build/libs/*.jar /app/app.jar
+COPY --from=build /workspace/build/libs/*-boot.jar /app/app.jar
 
 EXPOSE 8080
 
