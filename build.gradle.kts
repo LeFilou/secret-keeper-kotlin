@@ -57,10 +57,6 @@ dependencies {
 	implementation("org.liquibase:liquibase-core")
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("org.postgresql:postgresql")
-
-	// Misc
-	compileOnly("org.projectlombok:lombok")
-	annotationProcessor("org.projectlombok:lombok")
 }
 
 dependencyManagement {
@@ -92,8 +88,10 @@ testing {
 				dependencies {
 					// Unit Tests
 					implementation("org.springframework.boot:spring-boot-starter-test")
-					implementation("io.rest-assured:kotlin-extensions:5.1.1")
+					implementation("io.mockk:mockk:1.13.2")
 					implementation("io.rest-assured:spring-mock-mvc:5.1.1")
+					implementation("io.rest-assured:kotlin-extensions:5.1.1")
+					implementation("io.rest-assured:spring-mock-mvc-kotlin-extensions:5.3.0")
 				}
 			}
 		}
