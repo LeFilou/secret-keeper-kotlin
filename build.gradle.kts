@@ -86,12 +86,13 @@ testing {
 			if (this is JvmTestSuite) {
 				useJUnitJupiter()
 				dependencies {
-					// Unit Tests
 					implementation("org.springframework.boot:spring-boot-starter-test")
 					implementation("io.mockk:mockk:1.13.2")
 					implementation("io.rest-assured:spring-mock-mvc:5.1.1")
 					implementation("io.rest-assured:kotlin-extensions:5.1.1")
 					implementation("io.rest-assured:spring-mock-mvc-kotlin-extensions:5.3.0")
+					implementation("org.jeasy:easy-random:5.0.0")
+					implementation("org.jeasy:easy-random-core:5.0.0")
 				}
 			}
 		}
