@@ -1,4 +1,4 @@
-package org.melsif.secretkeeperkotlin.api
+package org.melsif.secretkeeperkotlin.credentials
 
 import org.melsif.secretkeeperkotlin.generated.credentials.api.CredentialDetails
 

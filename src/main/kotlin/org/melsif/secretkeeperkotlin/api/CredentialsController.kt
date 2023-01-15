@@ -1,5 +1,6 @@
 package org.melsif.secretkeeperkotlin.api
 
+import org.melsif.secretkeeperkotlin.credentials.CredentialService
 import org.melsif.secretkeeperkotlin.generated.credentials.api.CredentialDetails
 import org.melsif.secretkeeperkotlin.generated.credentials.api.CredentialsApi
 import org.springframework.http.ResponseEntity

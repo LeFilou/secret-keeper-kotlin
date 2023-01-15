@@ -10,6 +10,7 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.melsif.secretkeeperkotlin.credentials.CredentialService
 import org.melsif.secretkeeperkotlin.util.Generator.Companion.generateCredentials
 
 @ExtendWith(MockKExtension::class)
