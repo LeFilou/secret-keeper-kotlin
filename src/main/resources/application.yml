@@ -5,9 +5,9 @@ server:
 # Database config
 spring:
   datasource:
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
-    url: ${DB_URL}
+    username: "postgres"
+    password: "postgres"
+    url: "jdbc:postgresql://localhost:5432/postgres"
   liquibase:
     changeLog: "classpath:/db/changelog/changelog-master.xml"
   jpa:

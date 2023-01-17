@@ -15,10 +15,12 @@ plugins {
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
 	kotlin("plugin.jpa") version "1.6.21"
+	kotlin("kapt") version "1.5.10"
 	`jvm-test-suite`
 	jacoco
 	id("org.sonarqube") version "3.5.0.2730"
 	`maven-publish`
+	idea
 }
 
 repositories {
@@ -42,6 +44,7 @@ dependencies {
 	// Spring Boot
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -50,13 +53,21 @@ dependencies {
 	// Swagger
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("javax.validation:validation-api:2.0.1.Final")
-	implementation("org.openapitools:jackson-databind-nullable:0.2.2")
-	implementation("org.springdoc:springdoc-openapi-ui:1.6.9")
+	implementation("org.openapitools:jackson-databind-nullable:0.2.4")
+	implementation("org.springdoc:springdoc-openapi-ui:1.6.14")
 
 	// Database
 	implementation("org.liquibase:liquibase-core")
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("org.postgresql:postgresql")
+
+	// Misc
+	implementation("org.apache.commons:commons-lang3:3.12.0")
+	implementation("commons-validator:commons-validator:1.7")
+	implementation("org.mapstruct:mapstruct:1.5.3.Final")
+	kapt("org.mapstruct:mapstruct-processor:1.5.3.Final")
+	kapt("org.hibernate:hibernate-jpamodelgen:5.5.0.Final")
+
 }
 
 dependencyManagement {
@@ -77,6 +88,14 @@ tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
 		jvmTarget = "17"
+	}
+}
+
+idea {
+	module {
+		val kaptMain = file("build/generated/source/kapt/main")
+		sourceDirs.add(kaptMain)
+		generatedSourceDirs.add(kaptMain)
 	}
 }
 
@@ -163,7 +182,7 @@ tasks.jacocoTestCoverageVerification {
 	violationRules {
 		rule {
 			limit {
-				// minimum = "0.30".toBigDecimal()
+				minimum = "0.30".toBigDecimal()
 			}
 		}
 
@@ -175,18 +194,20 @@ tasks.jacocoTestCoverageVerification {
 			limit {
 				counter = "BRANCH"
 				value = "COVEREDRATIO"
-				// minimum = "0.80".toBigDecimal()
+				minimum = "0.80".toBigDecimal()
 			}
 
 			limit {
 				counter = "LINE"
 				value = "COVEREDRATIO"
-				// minimum = "0.90".toBigDecimal()
+				minimum = "0.90".toBigDecimal()
 			}
 
 			excludes = listOf(
 				"*.generated.*",
 				"*.SecretKeeperKotlinApplication*",
+				"*.*MapperImpl",
+				"*.*_"
 			)
 		}
 	}

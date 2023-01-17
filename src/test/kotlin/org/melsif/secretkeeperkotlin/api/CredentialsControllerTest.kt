@@ -10,6 +10,7 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.melsif.secretkeeperkotlin.credentials.CredentialSearchCriteria
 import org.melsif.secretkeeperkotlin.credentials.CredentialService
 import org.melsif.secretkeeperkotlin.util.Generator.Companion.generateCredentials
 
@@ -17,9 +18,11 @@ import org.melsif.secretkeeperkotlin.util.Generator.Companion.generateCredential
 class CredentialsControllerTest : ControllerTest() {
 
     private lateinit var credentialService: CredentialService
+    private lateinit var credentialMapper: CredentialMapper
     override fun getTestedController(): Any {
         credentialService = mockk()
-        return CredentialsController(credentialService)
+        credentialMapper = CredentialMapperImpl()
+        return CredentialsController(credentialService, credentialMapper)
     }
 
     @Nested
@@ -28,7 +31,7 @@ class CredentialsControllerTest : ControllerTest() {
         @Test
         fun `returns all the credentials if no search criteria is provided`() {
             val credentials = generateCredentials(5)
-            every { credentialService.fetch(null, null) } returns credentials
+            every { credentialService.fetch(CredentialSearchCriteria.NONE) } returns credentials
             Given {
                 header("content-type", "application/json")
             } When {
@@ -44,7 +47,7 @@ class CredentialsControllerTest : ControllerTest() {
             val url = "http://url.com"
             val username = "slimoux"
 
-            every { credentialService.fetch(url, username) } returns emptyList()
+            every { credentialService.fetch(CredentialSearchCriteria(url, username)) } returns emptyList()
             Given {
                 header("content-type", "application/json")
             } When {
@@ -57,7 +60,7 @@ class CredentialsControllerTest : ControllerTest() {
 
         @Test
         fun `returns http 500 if something went wrong while retrieving the credentials`() {
-            every { credentialService.fetch(null, null) } throws RuntimeException()
+            every { credentialService.fetch(CredentialSearchCriteria.NONE) } throws RuntimeException()
             Given {
                 header("content-type", "application/json")
             } When {

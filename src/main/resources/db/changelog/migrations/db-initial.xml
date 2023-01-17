@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1673962113084-1" author="slimo (generated)">
+        <createSequence incrementBy="1" sequenceName="credentials_id_seq" startValue="1"/>
+    </changeSet>
+    <changeSet id="1673962113084-2" author="slimo (generated)">
+        <createTable tableName="credentials">
+            <column name="id" type="INT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_credentials"/>
+            </column>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="creation_date" type="DATE"/>
+            <column name="modification_date" type="DATE"/>
+            <column name="url" type="VARCHAR(255)"/>
+            <column name="username" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
